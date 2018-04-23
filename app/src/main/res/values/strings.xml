@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">OpenGL_EX2</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_settings2">지상주차장</string>
+    <string name="action_settings3">지하1주차장</string>
+    <string name="action_reset_button">RESET</string>
+    <string name="action_plus_button"> + </string>
+    <string name="action_minus_button"> - </string>
+</resources>
