@@ -13,14 +13,15 @@ public class Square {
     private ShortBuffer drawListBuffer;
 
     // number of coordinates per vertex in this array
-    static final int COORDS_PER_VERTEX = 3;
-    static float squareCoords[] = {
+    private static final int COORDS_PER_VERTEX = 3;
+    private static float squareCoords[] = {
             -0.5f,  0.5f, 0.0f,   // top left
             -0.5f, -0.5f, 0.0f,   // bottom left
              0.5f, -0.5f, 0.0f,   // bottom right
              0.5f,  0.5f, 0.0f }; // top right
 
     private short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw vertices
+    private String areaType;
     float color[] = { 0.63671875f, 0.76953125f, 0.22265625f, 1.0f };
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -44,11 +45,19 @@ public class Square {
                     "}";
 
     private final int mProgram;
-    public Square(float x, float y) {
-        for(int i = 0; i < squareCoords.length / COORDS_PER_VERTEX; i++) {
-            squareCoords[i*COORDS_PER_VERTEX] = squareCoords[i*COORDS_PER_VERTEX] + x;
-            squareCoords[i*COORDS_PER_VERTEX + 1] = squareCoords[i*COORDS_PER_VERTEX + 1] + y;
-        }
+    public Square(float[] pos, String area) {
+
+        squareCoords[0] = pos[0];
+        squareCoords[1] = pos[1];
+        squareCoords[3] = pos[0];
+        squareCoords[4] = pos[1] - pos[3];
+        squareCoords[6] = pos[0] + pos[2];
+        squareCoords[7] = pos[1] - pos[3];
+        squareCoords[9] = pos[0] + pos[2];
+        squareCoords[10] = pos[1];
+
+        areaType = area;
+
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
         // (# of coordinate values * 4 bytes per float)
@@ -115,6 +124,15 @@ public class Square {
         // Pass the projection and view transformation to the shader
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
 
+        if( areaType.equals("structure") ) {
+            color[0] = 0.667f;
+            color[1] = 0.667f;
+            color[2] = 0.667f;
+        } else if ( areaType.equals("parking") ) {
+            color[0] = 0.224f;
+            color[1] = 0.800f;
+            color[2] = 0.800f;
+        }
         // Set color for drawing the triangle
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 
