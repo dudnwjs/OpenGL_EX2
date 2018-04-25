@@ -141,7 +141,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer {
         float[] scratch = new float[16];
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 50 - moveZ, mMove[0], mMove[1], 0f, 0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(mViewMatrix, 0,  mMove[0], mMove[1], 50 - moveZ, mMove[0], mMove[1], 0f, 0f, 1.0f, 0.0f);
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
